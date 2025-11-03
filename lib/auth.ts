@@ -7,9 +7,20 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     Google,
     Credentials({
       credentials: {
-        email: {},
-        password: {},
+        email: {
+          type: "email",
+          label: "Email",
+        },
+        password: {
+          type: "password",
+          label: "Password",
+        },
       },
+      // authorize: async (credentials) => {
+      //   if (!credentials.email && !credentials.password) {
+      //     throw new Error("All filed must be filled");
+      //   }
+      // },
     }),
   ],
 });
