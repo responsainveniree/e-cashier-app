@@ -4,8 +4,10 @@ CREATE TABLE `User` (
     `name` VARCHAR(191) NULL,
     `username` VARCHAR(191) NULL,
     `email` VARCHAR(191) NULL,
+    `password` VARCHAR(191) NULL,
     `emailVerified` DATETIME(3) NULL,
     `image` VARCHAR(191) NULL,
+    `role` VARCHAR(191) NOT NULL DEFAULT 'cashier',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
