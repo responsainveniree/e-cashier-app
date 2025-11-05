@@ -3,9 +3,16 @@ import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import { prisma } from "./prisma";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import bcrypt from "bcryptjs";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
+  session: {
+    strategy: "jwt",
+  },
+  pages: {
+    signIn: "/sign-in",
+  },
   providers: [
     Google,
     Credentials({
@@ -25,13 +32,29 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           where: { email },
         });
 
-        if (!user) return null;
+        if (!user) throw new Error("user not found");
 
-        const isValid = user.password === password;
-        if (!isValid) return null;
+        const isValid = await bcrypt.compare(password, user.password as string);
+        if (!isValid) {
+          throw new Error("Invalid email or password");
+        }
 
         return user;
       },
     }),
   ],
+  callbacks: {
+    authorized({ auth, request: { nextUrl } }) {
+      const isLoggedIn = !!auth?.user;
+      const isOnSignIn = nextUrl.pathname.startsWith("/sign-in");
+      const isOnSignUp = nextUrl.pathname.startsWith("/sign-up");
+
+      if (isOnSignIn || isOnSignUp) {
+        if (isLoggedIn) return Response.redirect(new URL("/", nextUrl));
+        return true;
+      }
+
+      return isLoggedIn;
+    },
+  },
 });
