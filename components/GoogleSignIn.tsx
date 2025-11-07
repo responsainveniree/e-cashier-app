@@ -1,4 +1,4 @@
-import { signIn } from "@/lib/auth";
+import { signIn } from "@/lib/authNode";
 import { Button } from "@/components/ui/button";
 import { GoogleIcon } from "./ui/google";
 const GoogleSignIn = () => {

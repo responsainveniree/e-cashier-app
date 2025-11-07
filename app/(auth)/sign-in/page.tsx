@@ -1,5 +1,5 @@
-import { auth } from "@/lib/auth";
-import { signIn } from "@/lib/auth";
+import { auth } from "@/lib/authNode";
+import { signIn } from "@/lib/authNode";
 import { GoogleSignIn } from "@/components/GoogleSignIn";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
